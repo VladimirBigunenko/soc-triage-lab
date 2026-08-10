@@ -11,6 +11,7 @@ from typing import Iterator, Protocol, runtime_checkable
 
 from core.entities.alert import Alert, LogEvent
 from core.entities.incident import Incident
+from core.entities.mitre import Technique
 from core.entities.severity import AlertStatus
 
 
@@ -71,10 +72,24 @@ class AlertRepository(Protocol):
         ...
 
 
+@runtime_checkable
+class TechniqueRepository(Protocol):
+    """Read-only access to MITRE ATT&CK technique metadata."""
+
+    def get(self, technique_id: str) -> Technique | None:
+        """Return technique metadata or None if unknown."""
+        ...
+
+    def list_all(self) -> list[Technique]:
+        """Return all known techniques."""
+        ...
+
+
 __all__ = [
     "LogSource",
     "Detector",
     "AlertNotifier",
     "ReportRenderer",
     "AlertRepository",
+    "TechniqueRepository",
 ]

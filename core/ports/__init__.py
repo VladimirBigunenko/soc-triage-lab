@@ -6,6 +6,7 @@ from core.ports.ports import (
     Detector,
     LogSource,
     ReportRenderer,
+    TechniqueRepository,
 )
 
 __all__ = [
@@ -14,4 +15,5 @@ __all__ = [
     "AlertNotifier",
     "ReportRenderer",
     "AlertRepository",
+    "TechniqueRepository",
 ]

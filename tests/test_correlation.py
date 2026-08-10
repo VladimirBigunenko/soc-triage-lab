@@ -2,6 +2,8 @@
 
 from datetime import datetime, timedelta, timezone
 
+import pytest
+
 from core.entities.severity import Severity
 from core.services.correlation import CorrelationService
 
@@ -77,3 +79,31 @@ class TestCorrelationService:
         ]
         incidents = service.correlate(low_group + crit_group)
         assert incidents[0].severity == Severity.CRITICAL
+
+
+class TestCorrelationStrategies:
+    def test_source_strategy_groups_by_ip(self):
+        service = CorrelationService(strategy="source", min_alerts_per_incident=2)
+        alerts = [
+            make_alert(iocs=[make_ioc(value="9.9.9.9")], timestamp=ts(2)),
+            make_alert(iocs=[make_ioc(value="9.9.9.9")], timestamp=ts(1)),
+            make_alert(iocs=[make_ioc(value="8.8.8.8")], timestamp=ts(0)),
+        ]
+        incidents = service.correlate(alerts)
+        assert len(incidents) == 1
+        assert len(incidents[0].alerts) == 2
+
+    def test_technique_strategy_groups_by_mitre(self):
+        service = CorrelationService(strategy="technique", min_alerts_per_incident=2)
+        alerts = [
+            make_alert(mitre="T1110", timestamp=ts(2)),
+            make_alert(mitre="T1110", timestamp=ts(1)),
+            make_alert(mitre="T1059", timestamp=ts(0)),
+        ]
+        incidents = service.correlate(alerts)
+        assert len(incidents) == 1
+        assert incidents[0].mitre_ttps == {"T1110"}
+
+    def test_invalid_strategy_rejected(self):
+        with pytest.raises(ValueError):
+            CorrelationService(strategy="bogus")
