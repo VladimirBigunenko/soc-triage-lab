@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 
 from core.entities.alert import Alert
+from core.entities.playbook import Playbook
 from core.entities.severity import IncidentStatus, Severity
 
 
@@ -21,6 +22,7 @@ class Incident:
     opened_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     closed_at: datetime | None = None
     summary: str = ""
+    playbook: Playbook | None = None
 
     def add_alert(self, alert: Alert) -> None:
         """Attach an alert; escalate severity if the alert is more severe."""

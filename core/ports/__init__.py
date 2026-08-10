@@ -5,6 +5,7 @@ from core.ports.ports import (
     AlertRepository,
     Detector,
     LogSource,
+    PlaybookRepository,
     ReportRenderer,
     TechniqueRepository,
 )
@@ -16,4 +17,5 @@ __all__ = [
     "ReportRenderer",
     "AlertRepository",
     "TechniqueRepository",
+    "PlaybookRepository",
 ]

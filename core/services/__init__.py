@@ -3,6 +3,7 @@
 from core.services.correlation import VALID_STRATEGIES, CorrelationService
 from core.services.detection import DetectionService
 from core.services.enrichment import EnrichmentService
+from core.services.playbooks import PlaybookEngine
 from core.services.triage import TriageDecision, TriageService
 
 __all__ = [
@@ -12,4 +13,5 @@ __all__ = [
     "CorrelationService",
     "VALID_STRATEGIES",
     "EnrichmentService",
+    "PlaybookEngine",
 ]

@@ -12,6 +12,7 @@ from typing import Iterator, Protocol, runtime_checkable
 from core.entities.alert import Alert, LogEvent
 from core.entities.incident import Incident
 from core.entities.mitre import Technique
+from core.entities.playbook import Playbook
 from core.entities.severity import AlertStatus
 
 
@@ -85,6 +86,19 @@ class TechniqueRepository(Protocol):
         ...
 
 
+@runtime_checkable
+class PlaybookRepository(Protocol):
+    """Provides response playbooks by trigger (MITRE technique)."""
+
+    def get_by_technique(self, technique_id: str) -> Playbook | None:
+        """Return the playbook for a technique, or None."""
+        ...
+
+    def list_all(self) -> list[Playbook]:
+        """Return all available playbooks."""
+        ...
+
+
 __all__ = [
     "LogSource",
     "Detector",
@@ -92,4 +106,5 @@ __all__ = [
     "ReportRenderer",
     "AlertRepository",
     "TechniqueRepository",
+    "PlaybookRepository",
 ]
