@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ incident.id }} — SOC Triage Lab</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 860px; margin: 2rem auto; padding: 0 1rem; color: #1c1c1c; }
+  h1 { border-bottom: 2px solid #222; padding-bottom: .4rem; font-size: 1.3rem; }
+  .badge { display: inline-block; padding: .1rem .5rem; border-radius: 4px; color: #fff; font-size: .8rem; }
+  .Critical { background: #c0392b; } .High { background: #e67e22; }
+  .Medium { background: #f1c40f; color: #333; } .Low { background: #3498db; } .Info { background: #95a5a6; }
+  .meta { color: #555; margin: .5rem 0 1rem; }
+  code { background: #f4f4f5; padding: .1rem .3rem; border-radius: 3px; }
+  ul { padding-left: 1.2rem; }
+  li { margin-bottom: .4rem; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { text-align: left; padding: .4rem; border-bottom: 1px solid #e5e5e5; }
+  .back { margin-bottom: 1rem; display: inline-block; }
+  pre { background: #fafafa; border: 1px solid #eee; padding: .8rem; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<a class="back" href="{% url 'dashboard-index' %}">&larr; Back to dashboard</a>
+<h1>Incident {{ incident.id }}</h1>
+<p><span class="badge {{ incident.severity.label }}">{{ incident.severity.label }}</span> &nbsp; <strong>{{ incident.title }}</strong></p>
+<p class="meta">Status: {{ incident.status.value }} · Opened: {{ incident.opened_at|date:"Y-m-d H:i" }} · Alerts: {{ incident.alerts|length }}</p>
+
+{% if incident.mitre_ttps %}
+<p><strong>MITRE ATT&amp;CK:</strong> {{ incident.mitre_ttps|join:", " }}</p>
+{% endif %}
+
+<h2>Indicators of Compromise</h2>
+{% if incident.iocs %}
+<table><thead><tr><th>Type</th><th>Value</th><th>Confidence</th></tr></thead><tbody>
+  {% for ioc in incident.iocs %}
+  <tr><td>{{ ioc.type }}</td><td><code>{{ ioc.value }}</code></td><td>{{ ioc.confidence|floatformat:2 }}</td></tr>
+  {% endfor %}
+</tbody></table>
+{% else %}<p class="meta">No IoCs.</p>{% endif %}
+
+{% if incident.playbook %}
+<h2>Playbook: {{ incident.playbook.name }}</h2>
+<ol>
+  {% for step in incident.playbook.steps %}
+  <li><strong>{{ step.action }}</strong> <span class="meta">[{{ step.assignee_role }}]</span><br>{{ step.description }}</li>
+  {% endfor %}
+</ol>
+{% endif %}
+
+<h2>Alerts</h2>
+<ul>
+{% for alert in incident.alerts %}
+  <li><span class="badge {{ alert.severity.label }}">{{ alert.severity.label }}</span> {{ alert.title }}
+      <span class="meta">({{ alert.detector }} · MITRE: {{ alert.mitre|default:"n/a" }})</span></li>
+{% endfor %}
+</ul>
+
+{% if incident.summary %}
+<h2>Summary</h2>
+<pre>{{ incident.summary }}</pre>
+{% endif %}
+</body>
+</html>

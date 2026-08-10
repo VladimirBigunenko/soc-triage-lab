@@ -13,8 +13,10 @@ dependencies = [
 [dependency-groups]
 dev = [
     "pytest>=9.1.1",
+    "pytest-django>=4.13.0",
 ]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
 testpaths = ["tests"]
+DJANGO_SETTINGS_MODULE = "config.settings"
