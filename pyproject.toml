@@ -1,10 +1,19 @@
 [project]
 name = "soc-triage-lab"
 version = "0.1.0"
-description = "Add your description here"
+description = "Working SOC laboratory: collect -> detect -> correlate -> respond -> visualize. Hexagonal Django + Ninja, MITRE ATT&CK, ECS demo logs."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "django>=6.1",
     "django-ninja>=1.4.5",
 ]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
