@@ -1,0 +1,15 @@
+services:
+  soc-triage:
+    build: .
+    image: soc-triage-lab:demo
+    command: uv run python manage.py scan_logs --out /app/reports
+    volumes:
+      - ./reports:/app/reports
+    environment:
+      # Optional: enable Telegram escalation in demo mode
+      # TELEGRAM_BOT_TOKEN: "your-bot-token"
+      # TELEGRAM_CHAT_ID: "-100123456789"
+      # TELEGRAM_BOT_TOKEN: "${TELEGRAM_BOT_TOKEN:-}"
+      # TELEGRAM_CHAT_ID: "${TELEGRAM_CHAT_ID:-}"
+      TELEGRAM_BOT_TOKEN: ""
+      TELEGRAM_CHAT_ID: ""

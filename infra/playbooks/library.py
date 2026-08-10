@@ -26,6 +26,17 @@ PLAYBOOKS: dict[str, Playbook] = {
             PlaybookStep(2, "Escalate if persistent", "Hand over to L2 for deeper analysis.", "L1"),
         ),
     ),
+    "T1059.007": Playbook(
+        id="PB-XSS",
+        name="Cross-Site Scripting Response",
+        trigger="T1059.007",
+        steps=(
+            PlaybookStep(0, "Sanitize the payload", "Capture the full payload for analysis; confirm if it executed.", "L1"),
+            PlaybookStep(1, "Check for execution", "Review browser/UA and server logs for script execution.", "L1"),
+            PlaybookStep(2, "Advise hardening", "Recommend input validation, output encoding and Content-Security-Policy.", "L2"),
+            PlaybookStep(3, "Document", "Record the finding and affected endpoints.", "L1"),
+        ),
+    ),
     "T1566": Playbook(
         id="PB-PHISHING",
         name="Phishing Response",

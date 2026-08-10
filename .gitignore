@@ -22,3 +22,6 @@ media/
 
 # OS
 .DS_Store
+
+# Generated demo reports
+reports/
