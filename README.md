@@ -1,5 +1,11 @@
 # SOC Triage Lab
 
+[![Python](https://img.shields.io/badge/Python-3.12-blue)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-5.2-green)](https://www.djangoproject.com/)
+[![Ninja](https://img.shields.io/badge/Ninja-API-orange)](https://django-ninja.dev/)
+[![Tests](https://img.shields.io/badge/tests-90%2B-brightgreen)](tests/)
+[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+
 A working **Security Operations Center laboratory** that demonstrates the full
 L1-analyst workflow: **collect → detect → correlate → respond → visualize**.
 
@@ -12,6 +18,18 @@ tooling is structured.
 > decided, how MITRE ATT&CK guides the response, and how everything is documented.
 
 ---
+
+## Pipeline at a glance
+
+```text
+┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐
+│ COLLECT  │ → │ DETECT   │ → │ TRIAGE   │ → │ RESPOND  │ → │VISUALIZE │
+│ ECS logs │   │ 6 detec- │   │ severity │   │ playbook │   │ API +    │
+│ (seeded) │   │ tors     │   │ + esc.   │   │ steps    │   │ dashboard│
+└──────────┘   └──────────┘   └──────────┘   └──────────┘   └──────────┘
+     │              │              │              │              │
+     └── MITRE ATT&CK mapping (T1110, T1190, T1059, T1046, T1566, T1595)
+```
 
 ## Highlights
 
@@ -28,7 +46,7 @@ tooling is structured.
 - **Deterministic ECS-formatted demo logs** (Elastic Common Schema field names) —
   the same shape a real SIEM pipeline would feed in.
 - **Ninja API** + server-rendered dashboard (no React — deliberately minimal).
-- **88+ tests** including an end-to-end pipeline test.
+- **90+ tests** including an end-to-end pipeline test.
 
 ## Quickstart
 
@@ -180,6 +198,18 @@ This project is a SOC portfolio, not a frontend showcase. The dashboard is
 deliberately minimal (server-rendered templates). The value is in the detection
 and triage logic — that is what an L1 analyst does every day. Adding a heavy SPA
 would add noise, not signal.
+
+## Skills demonstrated
+
+| Skill | Where |
+|-------|-------|
+| **Hexagonal / Ports & Adapters architecture** | `core/` has zero Django imports — pure domain logic |
+| **Security analysis (L1 SOC)** | 6 detectors mapped to MITRE ATT&CK with escalation policy |
+| **Python + Django + Ninja (Pydantic)** | API layer, typed schemas, server-rendered dashboard |
+| **Testing discipline** | 90+ tests; domain tests run without Django (milliseconds) |
+| **Data engineering** | Deterministic ECS-formatted log generation (SIEM-shaped) |
+| **Integration** | Telegram escalation, pluggable notifiers/renderers |
+| **Documentation** | Architecture docs, triage scenarios, example reports |
 
 ## License
 
